@@ -1,34 +1,32 @@
 from typing import List, Dict
-from app.dao.model.movie import Movie, MovieSchema
+from app.dao.model.movie import Movie
 
 
 class MovieDAO:
     def __init__(self, session):
         self.session = session
-        self.movie_schema = MovieSchema()
-        self.movies_schema = MovieSchema(many=True)
 
-    def get_one(self, uid: int) -> Dict:
-        return self.movie_schema.dump(self.session.query(Movie).get(uid))
+    def get_one(self, uid: int) -> Movie:
+        return self.session.query(Movie).get(uid)
 
-    def get_all(self) -> List[Dict]:
-        return self.movies_schema.dump(self.session.query(Movie).all())
+    def get_all(self) -> List[Movie]:
+        return self.session.query(Movie).all()
 
-    def get_all_by_director(self, did: int) -> List[Dict]:
+    def get_all_by_director(self, did: int) -> List[Movie]:
         """
         Возвращает все фильмы под режиссёрством указанного id
         :param did: id режиссёра
         :return: Список фильмов данного режиссёра
         """
-        return self.movies_schema.dump(self.session.query(Movie).filter(Movie.director_id == did).all())
+        return self.session.query(Movie).filter(Movie.director_id == did).all()
 
-    def get_all_by_genre(self, gid: int) -> List[Dict]:
+    def get_all_by_genre(self, gid: int) -> List[Movie]:
         """
         Возвращает все фильмы указанного жанра
         :param gid: id жанра
         :return: Список фильмов данного жанра
         """
-        return self.movies_schema.dump(self.session.query(Movie).filter(Movie.genre_id == gid).all())
+        return self.session.query(Movie).filter(Movie.genre_id == gid).all()
 
     def create(self, data: Dict) -> Movie:
         """
