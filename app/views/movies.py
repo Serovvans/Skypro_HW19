@@ -20,11 +20,14 @@ class MoviesViews(Resource):
         """"Все фильмы"""
         did = request.args.get("director_id")
         gid = request.args.get("genre_id")
+        year = request.args.get("year")
 
         if did:
-            return movie_service.get_all_by_director(did)
+            return self.movies_schema.dump(movie_service.get_all_by_director(did))
         if gid:
-            return movie_service.get_all_by_genre(gid)
+            return self.movies_schema.dump(movie_service.get_all_by_genre(gid))
+        if year:
+            return self.movies_schema.dump(movie_service.get_all_by_year(year))
         return self.movies_schema.dump(movie_service.get_all())
 
     def post(self) -> Dict:

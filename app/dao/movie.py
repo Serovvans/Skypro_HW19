@@ -28,6 +28,14 @@ class MovieDAO:
         """
         return self.session.query(Movie).filter(Movie.genre_id == gid).all()
 
+    def get_all_by_year(self, year: int) -> List[Movie]:
+        """
+        Возвращает все фильмы, выпущенные в указанном году
+        :param year: год выпуска фильма
+        :return: Список фильмов по году
+        """
+        return self.session.query(Movie).filter(Movie.year == year).all()
+
     def create(self, data: Dict) -> Movie:
         """
         Создаёт новый фильм и добавляет его в базу
